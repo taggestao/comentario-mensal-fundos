@@ -11,7 +11,7 @@ const { fecharPaginas, fecharBrowser } = require('./lib/util');
 // erros do navegador (aba travou, navegador fechou) costumam passar na segunda tentativa
 const erroDeNavegador = e => /Target crashed|has been closed|ERR_ABORTED|Navigation failed/i.test(e.message);
 
-const TODOS = ['ninetyone', 'oaktree', 'algebris', 'pimco', 'man', 'bny', 'jupiter', 'schroder', 'bsf', 'aqr_apex', 'aqr_delphi'];
+const TODOS = ['ninetyone', 'oaktree', 'algebris', 'pimco', 'man', 'bny', 'jupiter', 'schroder', 'bsf'];
 
 function arg(nome, padrao) {
   const i = process.argv.indexOf(`--${nome}`);
