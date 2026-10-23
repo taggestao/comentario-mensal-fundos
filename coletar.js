@@ -8,7 +8,7 @@ const fs = require('fs');
 const path = require('path');
 const { fecharBrowser } = require('./lib/util');
 
-const TODOS = ['ninetyone', 'oaktree', 'algebris', 'pimco', 'man', 'bny'];
+const TODOS = ['ninetyone', 'oaktree', 'algebris', 'pimco', 'man', 'bny', 'jupiter', 'schroder', 'bsf', 'aqr_apex', 'aqr_delphi'];
 
 function arg(nome, padrao) {
   const i = process.argv.indexOf(`--${nome}`);
