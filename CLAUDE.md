@@ -10,7 +10,7 @@ O computador da equipe é Windows, acessa do Brasil e usa o Edge (`channel: 'mse
 AQR e o trimestral da Ninety One vêm por e-mail: `apps-script/coleta_email.gs` (Google Apps Script na conta da
 usuária) salva anexos e links "Access Your Report" direto nas pastas do Drive.
 O BSF (BlackRock) vem por securelink que exige login: o script anota em `_links_pendentes.json` e
-`fundos/bsf_relatorios.js` baixa com a sessão salva por `login_blackrock.bat` (perfil em `perfil-blackrock/`).
+`fundos/bsf_relatorios.js` baixa com a sessão salva por `login_blackrock.bat` (cookies em `sessao-blackrock.json`).
 
 ## 2. Comentários do mês (feito pelo Claude, a pedido)
 Documento: `AAAAMM - TAG Offshore UCITS Mutual Funds - Resultados e Comentários.docx`, na pasta
