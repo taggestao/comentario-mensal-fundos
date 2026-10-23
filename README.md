@@ -37,6 +37,10 @@ setx AQR_SENHA "sua-senha"
 
 A senha fica salva no seu usuário do Windows, não neste repositório. Sem essas variáveis, só os fundos da AQR dão erro no log; os outros funcionam normalmente.
 
+## Comentários do mês
+
+Depois de baixar o Word dos comentários que o Claude gerou, dê dois cliques em **`publicar_comentario.bat`**: ele pega o arquivo mais recente em Downloads, copia para a pasta `Materiais - TAG Offshore UCITS Mutual Funds - Resultados e Comentários` (em `Gestao_Base_Dados`) com o nome padrão e salva a cópia em PDF pelo Word. Se o arquivo já existir na pasta, pergunta antes de substituir.
+
 ## Como funciona
 
 - Cada execução baixa a versão **mais recente** publicada no site. Se o arquivo já existe na pasta, ele é pulado. Por isso rodar duas vezes no mês é seguro: o que ainda não tinha saído no dia 15 é pego no dia 25.
