@@ -11,7 +11,7 @@ const { fecharPaginas, fecharBrowser } = require('./lib/util');
 // erros do navegador (aba travou, navegador fechou) costumam passar na segunda tentativa
 const erroDeNavegador = e => /Target crashed|has been closed|ERR_ABORTED|Navigation failed/i.test(e.message);
 
-const TODOS = ['ninetyone', 'oaktree', 'algebris', 'pimco', 'man', 'bny', 'jupiter', 'schroder', 'bsf'];
+const TODOS = ['ninetyone', 'oaktree', 'algebris', 'pimco', 'man', 'bny', 'jupiter', 'schroder', 'bsf', 'bsf_relatorios'];
 
 function arg(nome, padrao) {
   const i = process.argv.indexOf(`--${nome}`);
@@ -35,12 +35,12 @@ const pastaDo = fundo => path.join(DESTINO, ...fundo.pasta.split('\\'));
       if (!fs.existsSync(pasta)) throw new Error(`pasta não existe: ${pasta}`);
       let docs;
       try {
-        docs = await fundo.coletar();
+        docs = await fundo.coletar({ pasta });
       } catch (e) {
         if (!erroDeNavegador(e)) throw e;
         console.log(`[${fundo.nome}] erro do navegador (${e.message.split('\n')[0]}); tentando de novo`);
         await fecharBrowser();
-        docs = await fundo.coletar();
+        docs = await fundo.coletar({ pasta });
       }
       for (const doc of docs) {
         const destino = path.join(pasta, doc.arquivo);
