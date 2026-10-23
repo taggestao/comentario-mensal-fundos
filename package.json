@@ -1,0 +1,13 @@
+{
+  "name": "comentario-mensal-fundos",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Baixa os factsheets e comentários mensais dos fundos de crédito offshore e salva nas pastas Institucional do drive Gestao_Assets",
+  "scripts": {
+    "coletar": "node coletar.js"
+  },
+  "dependencies": {
+    "pdfjs-dist": "4.10.38",
+    "playwright": "1.56.1"
+  }
+}
