@@ -8,7 +8,7 @@ Baixa dos sites dos gestores os factsheets e comentários mensais dos fundos de 
 | Oaktree Global Credit (Class I USD Acc) | Fact Sheet | `Oaktree\Oaktree Global Credit Fund\Institucional` |
 | Algebris Financial Credit (I EUR Acc) | Fact Sheet | `Algebris Investments\Algebris Financial Credit Fund\Institucional` |
 | PIMCO GIS Income (Inst USD Acc) | Fact Sheet, Commentary | `PIMCO\PIMCO GIS Income Fund\Institucional` |
-| Man High Yield Opportunities (I Acc USD) | Fact Sheet, Commentary | `Man Group\GLG\Man High Yield Opportunities\Institucional` |
+| Man GLG High Yield Opportunities (I H USD) | Fact Sheet, Commentary | `Man Group\GLG\Man High Yield Opportunities\Institucional` |
 | BNY Multi-Sector Credit Income | Factsheet, Commentary | `BNY Mellon\BNY Multi-Sector Credit Income Fund\Institucional` |
 
 Exemplo de nome: `PIMCO GIS Income Fund - 202610 - Fact Sheet - Inst USD.pdf`. O mês (`AAAAMM`) é lido do próprio documento.
@@ -33,7 +33,7 @@ O Google Drive para computador precisa estar aberto, com o drive `G:` disponíve
 ## Pontos de atenção
 
 - **Ninety One – Quarterly Reporting**: não está no site. Chega por e-mail de `noreplyclientopsreporting@ninetyone.com` e continua manual.
-- **Man**: o site escolhe o catálogo pelo IP do computador. Não foi possível testar fora do Brasil; na primeira execução confira no log o campo `origem` (título do documento escolhido) para garantir que é o factsheet da classe I Acc USD.
+- **Man**: primeiro tenta a central de documentos da man.com, que escolhe o catálogo pelo IP do computador (do Brasil o fundo aparece). Se falhar, usa o `Man Group.zip` que a HMC/Gama publica junto do e-mail "HMC/Gama | Atualização Mensal MAN" (botão "Acessar materiais"). O endereço do zip é sempre o mesmo e o conteúdo é trocado a cada mês. Na primeira execução, confira no log o campo `origem` para ver de onde veio cada arquivo.
 - **PIMCO – Commentary**: em mês de fim de trimestre o site publica o *Quarterly Investment Report*; nos outros meses, o *Monthly Commentary*. O script salva o mais recente dos dois.
 - **Algebris**: costuma publicar o factsheet só depois do dia 20 do mês seguinte.
 - Se um gestor mudar o site, só aquele fundo dá erro no log; os outros continuam funcionando. Cada fundo fica em um arquivo próprio em `fundos/`.
