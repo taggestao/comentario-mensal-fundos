@@ -6,7 +6,10 @@
 //   --fundos   roda só os fundos listados (nomes dos arquivos em fundos/)
 const fs = require('fs');
 const path = require('path');
-const { fecharBrowser } = require('./lib/util');
+const { fecharPaginas, fecharBrowser } = require('./lib/util');
+
+// erros do navegador (aba travou, navegador fechou) costumam passar na segunda tentativa
+const erroDeNavegador = e => /Target crashed|has been closed|ERR_ABORTED|Navigation failed/i.test(e.message);
 
 const TODOS = ['ninetyone', 'oaktree', 'algebris', 'pimco', 'man', 'bny', 'jupiter', 'schroder', 'bsf', 'aqr_apex', 'aqr_delphi'];
 
@@ -30,7 +33,16 @@ const pastaDo = fundo => path.join(DESTINO, ...fundo.pasta.split('\\'));
     const pasta = pastaDo(fundo);
     try {
       if (!fs.existsSync(pasta)) throw new Error(`pasta não existe: ${pasta}`);
-      for (const doc of await fundo.coletar()) {
+      let docs;
+      try {
+        docs = await fundo.coletar();
+      } catch (e) {
+        if (!erroDeNavegador(e)) throw e;
+        console.log(`[${fundo.nome}] erro do navegador (${e.message.split('\n')[0]}); tentando de novo`);
+        await fecharBrowser();
+        docs = await fundo.coletar();
+      }
+      for (const doc of docs) {
         const destino = path.join(pasta, doc.arquivo);
         if (fs.existsSync(destino)) {
           resumo.existentes.push(doc.arquivo);
@@ -42,8 +54,10 @@ const pastaDo = fundo => path.join(DESTINO, ...fundo.pasta.split('\\'));
         }
       }
     } catch (e) {
-      resumo.erros.push(`${fundo.nome}: ${e.message}`);
-      console.log(`[${fundo.nome}] ERRO: ${e.message}`);
+      resumo.erros.push(`${fundo.nome}: ${e.message.split('\n')[0]}`);
+      console.log(`[${fundo.nome}] ERRO: ${e.message.split('\n')[0]}`);
+    } finally {
+      await fecharPaginas();
     }
   }
   await fecharBrowser();

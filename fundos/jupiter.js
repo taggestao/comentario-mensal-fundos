@@ -15,7 +15,12 @@ module.exports = {
   pasta: 'Jupiter Asset Mgmt\\Jupiter Merian Global Equity Absolute Return Fund - GEAR\\Institucional',
   async coletar() {
     const p = await novaPagina();
-    await p.goto(PAGINA, { waitUntil: 'domcontentloaded', timeout: 60000 });
+    // o site às vezes redireciona no meio da navegação (ERR_ABORTED); a página segue carregando
+    await p.goto(PAGINA, { waitUntil: 'domcontentloaded', timeout: 60000 }).catch(e => {
+      if (!/ERR_ABORTED/.test(e.message)) throw e;
+    });
+    await p.waitForTimeout(3000);
+    if (!/fund-centre/.test(p.url())) await p.goto(PAGINA, { waitUntil: 'domcontentloaded', timeout: 60000 });
     await p.click('#onetrust-accept-btn-handler', { timeout: 8000 }).catch(() => {});
     let links = [];
     for (let i = 0; i < 30; i++) {
