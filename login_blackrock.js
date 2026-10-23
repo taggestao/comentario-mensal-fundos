@@ -1,13 +1,9 @@
 // Abre o portal da BlackRock numa janela do Edge para você fazer login uma vez.
-// A sessão fica salva em perfil-blackrock\ e a coleta usa para baixar os relatórios do BSF.
-const { abrirPerfil } = require('./lib/blackrock');
+// Os cookies da sessão ficam em sessao-blackrock.json e a coleta usa para baixar os relatórios do BSF.
+const { login, SESSAO } = require('./lib/blackrock');
 
-(async () => {
-  const ctx = await abrirPerfil(false);
-  const p = ctx.pages()[0] || await ctx.newPage();
-  await p.goto('https://www.blackrock.com/authplatform/user/signin', { waitUntil: 'domcontentloaded' }).catch(() => {});
-  console.log('Faça login na janela do Edge que abriu (use seu e-mail da TAG).');
-  console.log('Depois de entrar, FECHE a janela do Edge para salvar a sessão.');
-  await new Promise(resolve => ctx.on('close', resolve));
-  console.log('Sessão salva. Pode rodar a coleta.');
-})();
+console.log('Faça login na janela do Edge que vai abrir (use seu e-mail da TAG).');
+console.log('Quando aparecer a área logada, FECHE a janela do Edge.');
+login()
+  .then(() => console.log(`Sessão salva em ${SESSAO}. Pode rodar a coleta.`))
+  .catch(e => { console.error('Erro no login:', e.message); process.exitCode = 1; });

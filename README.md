@@ -39,7 +39,7 @@ Alguns materiais só chegam por e-mail. O script `apps-script/coleta_email.gs` r
 | Ninety One | Quarterly Reporting (anexo) | `Ninety One GSF Emerging Markets Corporate Debt Fund - AAAAMM - Quarterly Reporting.pdf` |
 | BSF Global Event Driven | Monthly Fund Update e Quarterly Extended Commentary (securelink, exige login) | `BSF Global Event Driven Fund - AAAAMM - Fund Update.pdf`, `... - Quarterly Extended Commentary.pdf` |
 
-**BlackRock (BSF):** o link do e-mail exige login no portal da BlackRock. O script só anota o link em `_links_pendentes.json` na pasta do BSF, e a rotina do computador (`coletar.bat`) baixa usando uma sessão salva. Faça o login uma vez com **`login_blackrock.bat`**: abre o Edge, você entra com o e-mail da TAG e fecha a janela. Se um dia o log disser que a sessão não está ativa, rode o `login_blackrock.bat` de novo.
+**BlackRock (BSF):** o link do e-mail exige login no portal da BlackRock. O script só anota o link em `_links_pendentes.json` na pasta do BSF, e a rotina do computador (`coletar.bat`) baixa usando uma sessão salva (`sessao-blackrock.json`, fica só no seu computador). Faça o login uma vez com **`login_blackrock.bat`**: abre o Edge, você entra com o e-mail da TAG e fecha a janela quando aparecer a área logada. Se um dia o log disser que a sessão não está ativa, rode o `login_blackrock.bat` de novo.
 
 Instalação (uma vez):
 1. Abra https://script.google.com logado no e-mail que recebe os relatórios e clique em **Novo projeto**.
