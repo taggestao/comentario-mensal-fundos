@@ -6,8 +6,9 @@ Este repositório tem duas rotinas mensais da área de Gestão Offshore.
 `coletar.bat` / `node coletar.js` baixa factsheets e comentários dos gestores e salva em
 `G:\Drives compartilhados\Gestao_Assets\<gestor>\<fundo>\Institucional` com o nome padrão
 (ver README). Agendado para os dias 15 e 25. Cada fundo é um módulo em `fundos/`.
-O computador da equipe é Windows, acessa do Brasil e usa o Edge (`channel: 'msedge'`);
-a AQR exige login via `AQR_USUARIO` / `AQR_SENHA`.
+O computador da equipe é Windows, acessa do Brasil e usa o Edge (`channel: 'msedge'`).
+AQR e o trimestral da Ninety One vêm por e-mail: `apps-script/coleta_email.gs` (Google Apps Script na conta da
+usuária) salva anexos e links "Access Your Report" direto nas pastas do Drive.
 
 ## 2. Comentários do mês (feito pelo Claude, a pedido)
 Documento: `AAAAMM - TAG Offshore UCITS Mutual Funds - Resultados e Comentários.docx`, na pasta
