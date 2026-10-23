@@ -37,6 +37,9 @@ Alguns materiais só chegam por e-mail. O script `apps-script/coleta_email.gs` r
 | AQR Delphi | Monthly Update (link) | `AQR Delphi Long Short Equity UCITS Fund - AAAAMM - Update.pdf` |
 | AQR Delphi | Monthly Reporting Package (anexos) | `AQR Delphi Long-Short Equity UCITS Fund - AAAAMM - Custom Risk Report.pdf`, `... - Since Inception Performance.pdf` |
 | Ninety One | Quarterly Reporting (anexo) | `Ninety One GSF Emerging Markets Corporate Debt Fund - AAAAMM - Quarterly Reporting.pdf` |
+| BSF Global Event Driven | Monthly Fund Update e Quarterly Extended Commentary (securelink, exige login) | `BSF Global Event Driven Fund - AAAAMM - Fund Update.pdf`, `... - Quarterly Extended Commentary.pdf` |
+
+**BlackRock (BSF):** o link do e-mail exige login no portal da BlackRock. O script só anota o link em `_links_pendentes.json` na pasta do BSF, e a rotina do computador (`coletar.bat`) baixa usando uma sessão salva. Faça o login uma vez com **`login_blackrock.bat`**: abre o Edge, você entra com o e-mail da TAG e fecha a janela. Se um dia o log disser que a sessão não está ativa, rode o `login_blackrock.bat` de novo.
 
 Instalação (uma vez):
 1. Abra https://script.google.com logado no e-mail que recebe os relatórios e clique em **Novo projeto**.
@@ -62,6 +65,5 @@ Depois de baixar o Word dos comentários que o Claude gerou, dê dois cliques em
 
 - **Man**: primeiro tenta a central de documentos da man.com, que escolhe o catálogo pelo IP do computador (do Brasil o fundo aparece). Se falhar, usa o `Man Group.zip` que a HMC/Gama publica junto do e-mail "HMC/Gama | Atualização Mensal MAN" (botão "Acessar materiais"). O endereço do zip é sempre o mesmo e o conteúdo é trocado a cada mês. Na primeira execução, confira no log o campo `origem` para ver de onde veio cada arquivo.
 - **PIMCO – Commentary**: em mês de fim de trimestre o site publica o *Quarterly Investment Report*; nos outros meses, o *Monthly Commentary*. O script salva o mais recente dos dois.
-- **BSF – Fund Update**: o "Fund Update" mensal não está no site público da BlackRock (chega por outro canal) e continua manual; a rotina salva só o factsheet.
 - **Algebris**: costuma publicar o factsheet só depois do dia 20 do mês seguinte.
 - Se um gestor mudar o site, só aquele fundo dá erro no log; os outros continuam funcionando. Cada fundo fica em um arquivo próprio em `fundos/`.

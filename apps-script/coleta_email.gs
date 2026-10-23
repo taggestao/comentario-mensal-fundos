@@ -12,12 +12,30 @@ const PASTAS = {
   aqrApex: '1EymdlnRFJDb7e5Kim5D9v56WGGQyHhUH',    // AQR\AQR Alternative Strategies\AQR Apex Strategy\Institucional
   aqrDelphi: '1QAdor8fhfeoyW6atYRp-ak2bgzedjGar',  // AQR\AQR Alternative Strategies\AQR Delphi Long-Short Equity Strategy\Institucional
   ninetyOne: '1bjQ0MArQU5dTzbwUvXXcfKEJ5pxPZsGO',  // Ninety One\Ninety One GSF Emerging Markets Corporate Debt Fund\Institucional
+  bsf: '1_0S1oayznlfr7UwiD34IVsGrTp7EUuCX',        // BlackRock\BlackRock Strategic Funds\BSF Global Event Driven Fund\Institucional
 };
+
+// Links que exigem login no portal do gestor: o script só anota (link + nome do arquivo) neste arquivo da
+// pasta do fundo, e a rotina do computador baixa com a sessão salva pelo login_blackrock.bat.
+const PENDENTES = '_links_pendentes.json';
 
 const APEX = 'AQR APEX UCITS Fund';
 const DELPHI = 'AQR Delphi Long-Short Equity UCITS Fund';
 
 const REGRAS = [
+  // BlackRock – "securelink" exige login no portal da BlackRock
+  {
+    nome: 'BSF – Monthly Fund Update',
+    busca: 'from:alt-clientsupport@blackrock.com subject:"Global Event Driven_Monthly Fund Update"',
+    pasta: PASTAS.bsf,
+    pendente: mes => `BSF Global Event Driven Fund - ${mes} - Fund Update.pdf`,
+  },
+  {
+    nome: 'BSF – Quarterly Extended Commentary',
+    busca: 'from:alt-clientsupport@blackrock.com subject:"Global Event Driven Fund - Quarterly Extended Commentary"',
+    pasta: PASTAS.bsf,
+    pendente: mes => `BSF Global Event Driven Fund - ${mes} - Quarterly Extended Commentary.pdf`,
+  },
   // anexos – o nome do anexo traz o mês: "APEXUCITS.Monthly Performance Report.202609.pdf"
   {
     nome: 'AQR Apex – Monthly Reporting Package',
@@ -88,7 +106,7 @@ function coletar() {
     for (const thread of threads) {
       try {
         for (const msg of thread.getMessages()) {
-          const salvos = regra.link ? salvarLink(regra, msg) : salvarAnexos(regra, msg);
+          const salvos = regra.pendente ? anotarPendente(regra, msg) : regra.link ? salvarLink(regra, msg) : salvarAnexos(regra, msg);
           salvos.forEach(s => resumo.push(`${regra.nome}: ${s}`));
         }
         thread.addLabel(rotulo);
@@ -138,6 +156,23 @@ function salvarLink(regra, msg) {
   return salvar(regra.pasta, nome, blob) ? [nome] : [];
 }
 
+/** Anota o securelink no arquivo de pendências da pasta (a rotina do computador baixa depois). */
+function anotarPendente(regra, msg) {
+  const m = msg.getBody().match(/https:\/\/www\.blackrock\.com\/securelink\/report\/[^"'\s)\]<>]+/);
+  if (!m) throw new Error('securelink não encontrado no e-mail');
+  const arquivo = regra.pendente(mesDoTexto(msg.getSubject()) || mesDoTexto(m[0]) || mesAnterior(msg.getDate()));
+  if (existe(regra.pasta, arquivo)) return [];
+  const pasta = DriveApp.getFolderById(regra.pasta);
+  const atual = pasta.getFilesByName(PENDENTES);
+  const f = atual.hasNext() ? atual.next() : null;
+  const lista = f ? JSON.parse(f.getBlob().getDataAsString() || '[]') : [];
+  if (lista.some(x => x.arquivo === arquivo)) return [];
+  lista.push({ arquivo, link: m[0], recebido: msg.getDate().toISOString() });
+  const json = JSON.stringify(lista, null, 2);
+  if (f) f.setContent(json); else pasta.createFile(PENDENTES, json, 'application/json');
+  return [`${arquivo} (link anotado; a rotina do computador baixa)`];
+}
+
 /** Cria o arquivo na pasta, a menos que já exista um com o mesmo nome. */
 function salvar(pastaId, nome, blob) {
   if (existe(pastaId, nome)) return false;
@@ -151,8 +186,12 @@ function existe(pastaId, nome) {
 
 const MESES = { january: 1, february: 2, march: 3, april: 4, may: 5, june: 6, july: 7, august: 8, september: 9, october: 10, november: 11, december: 12 };
 
-/** "…202609…", "…20260930…" ou "September 2026" -> "202609" */
+const MES3 = { JAN: 1, FEB: 2, MAR: 3, APR: 4, MAY: 5, JUN: 6, JUL: 7, AUG: 8, SEP: 9, OCT: 10, NOV: 11, DEC: 12 };
+
+/** "…202609…", "…20260930…", "30-SEP-2026" ou "September 2026" -> "202609" */
 function mesDoTexto(t) {
+  const c = t.match(/\b\d{1,2}-(JAN|FEB|MAR|APR|MAY|JUN|JUL|AUG|SEP|OCT|NOV|DEC)-(20\d\d)\b/i);
+  if (c) return c[2] + String(MES3[c[1].toUpperCase()]).padStart(2, '0');
   const n = t.match(/(20\d\d)(0[1-9]|1[0-2])(?:\d{2})?(?!\d)/);
   if (n) return n[1] + n[2];
   const e = t.match(/(January|February|March|April|May|June|July|August|September|October|November|December)\s+(20\d\d)/i);
