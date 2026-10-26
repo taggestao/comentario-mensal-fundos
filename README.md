@@ -1,4 +1,6 @@
-# Comentário mensal – fundos de crédito offshore
+# Comentário mensal – fundos UCITS offshore
+
+**Passo a passo da rotina, origem de cada material e checklist do mês: [ROTINA_MENSAL.md](ROTINA_MENSAL.md).**
 
 Baixa dos sites dos gestores os factsheets e comentários mensais dos fundos UCITS offshore (crédito e ações/multiestratégia) e salva cada arquivo na pasta `Institucional` do fundo, no drive compartilhado `Gestao_Assets`, com o nome padrão da equipe.
 
@@ -52,7 +54,7 @@ Cada e-mail processado recebe o rótulo `coleta-fundos-salvo` no Gmail. Arquivo 
 
 ## Comentários do mês
 
-Depois de baixar o Word dos comentários que o Claude gerou, dê dois cliques em **`publicar_comentario.bat`**: ele pega o arquivo mais recente em Downloads, copia para a pasta `Materiais - TAG Offshore UCITS Mutual Funds - Resultados e Comentários` (em `Gestao_Base_Dados`) com o nome padrão e salva a cópia em PDF pelo Word. Se o arquivo já existir na pasta, pergunta antes de substituir.
+Depois de baixar o Word dos comentários que o Claude gerou, dê dois cliques em **`publicar_comentario.bat`** (ou arraste o .docx para cima dele): ele pega o arquivo mais recente em Downloads, copia para a pasta `Materiais - TAG Offshore UCITS Mutual Funds - Resultados e Comentários` (em `Gestao_Base_Dados`) com o nome padrão e salva a cópia em PDF pelo Word. Se o arquivo já existir na pasta, pergunta antes de substituir.
 
 ## Como funciona
 
