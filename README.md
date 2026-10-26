@@ -22,7 +22,7 @@ Exemplo de nome: `PIMCO GIS Income Fund - 202610 - Fact Sheet - Inst USD.pdf`. O
 2. Baixe este repositório (botão **Code > Download ZIP**, ou `git clone`) para uma pasta do computador, por exemplo `C:\coleta-fundos`.
 3. Dê dois cliques em **`instalar.bat`**.
 4. Dê dois cliques em **`coletar.bat`** para testar. O resultado aparece na tela e fica em `logs\`.
-5. Dê dois cliques em **`agendar.bat`**: cria duas tarefas no Agendador do Windows ("Coleta Fundos Offshore - dia 15" e "- dia 25"), **às 10h**. Se o computador estiver desligado nesse horário, ela roda assim que ligar.
+5. Dê dois cliques em **`agendar.bat`**: cria a tarefa "Coleta Fundos Offshore" no Agendador do Windows para os dias **15 e 25 de cada mês, às 10h**. Se o computador estiver desligado nesse horário, ela roda assim que ligar.
 
 O Google Drive para computador precisa estar aberto, com o drive `G:` disponível.
 
