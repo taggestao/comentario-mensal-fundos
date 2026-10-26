@@ -10,6 +10,13 @@ $ErrorActionPreference = 'Stop'
 
 $destino = 'G:\Drives compartilhados\Gestao_Base_Dados\OFF\Documentos\Estudos, Demandas, Trades, Projetos\Projetos - Rotinas Mensais\Materiais - TAG Offshore UCITS Mutual Funds - Resultados e Comentários'
 $longo = { param($p) if ($p.StartsWith('\\?\')) { $p } else { '\\?\' + $p } }
+# copia com novas tentativas: o Word e o Google Drive podem segurar o arquivo por alguns segundos
+function Copiar($de, $para) {
+  for ($i = 1; ; $i++) {
+    try { [IO.File]::Copy((& $longo $de), (& $longo $para), $true); return }
+    catch { if ($i -ge 10) { throw }; Start-Sleep -Seconds 2 }
+  }
+}
 
 try {
   if (-not (Test-Path -LiteralPath $destino)) { throw "Pasta de destino não encontrada (o Google Drive está aberto?): $destino" }
@@ -43,11 +50,12 @@ try {
   }
 
   # trabalha numa pasta temporária local (caminho curto) e gera o PDF lá
-  $tmp = Join-Path $env:TEMP 'publicar_comentario'
+  # uma pasta nova a cada execução: se um Word de uma execução anterior ainda segurar algum arquivo, não atrapalha
+  $tmp = Join-Path $env:TEMP ('publicar_comentario_' + (Get-Date -Format 'yyyyMMdd_HHmmss'))
   New-Item -ItemType Directory -Force -Path $tmp | Out-Null
   $tmpDocx = Join-Path $tmp $nome
   $tmpPdf = Join-Path $tmp $nomePdf
-  [IO.File]::Copy((& $longo $arq.FullName), $tmpDocx, $true)
+  Copiar $arq.FullName $tmpDocx
   if (Test-Path -LiteralPath $tmpPdf) { Remove-Item -LiteralPath $tmpPdf }
 
   $word = New-Object -ComObject Word.Application
@@ -59,12 +67,14 @@ try {
     $doc.Close($false)
   } finally {
     $word.Quit()
+    [void][Runtime.InteropServices.Marshal]::ReleaseComObject($word)
   }
   if (-not (Test-Path -LiteralPath $tmpPdf)) { throw 'O Word não gerou o PDF.' }
 
   # copia para a pasta de Materiais (caminho longo) e remove as versões com nome antigo
-  [IO.File]::Copy($tmpDocx, (& $longo $docx), $true)
-  [IO.File]::Copy($tmpPdf, (& $longo $pdf), $true)
+  # o .docx vai direto do arquivo de origem (o Word abriu só a cópia temporária)
+  Copiar $arq.FullName $docx
+  Copiar $tmpPdf $pdf
   foreach ($a in $antigos) {
     if ($a.Name -ne $nome -and $a.Name -ne $nomePdf) {
       [IO.File]::Delete((& $longo (Join-Path $destino $a.Name)))
@@ -74,7 +84,7 @@ try {
   foreach ($f in $docx, $pdf) {
     if (-not [IO.File]::Exists((& $longo $f))) { throw "Não encontrei o arquivo depois de copiar: $f" }
   }
-  Remove-Item -LiteralPath $tmpDocx, $tmpPdf -ErrorAction SilentlyContinue
+  Remove-Item -LiteralPath $tmp -Recurse -Force -ErrorAction SilentlyContinue
 
   Write-Host ''
   Write-Host "Salvo: $docx"
