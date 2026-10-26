@@ -3,3 +3,4 @@ logs/
 teste/
 perfil-blackrock/
 sessao-blackrock.json
+__pycache__/

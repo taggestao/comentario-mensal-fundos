@@ -19,18 +19,29 @@ Documento: `AAAAMM - TAG Offshore UCITS Mutual Funds - Resultados e Comentários
 (no Drive: pasta "Materiais - TAG Offshore UCITS Mutual Funds - Resultados e Comentários").
 
 Passos:
-1. Partir do documento do mês anterior (ou do rascunho do mês, se a equipe já tiver salvo) na pasta acima.
-   Manter a formatação (Calibri, vermelho EE0000, títulos 14 pt) e trocar o mês no cabeçalho (header1.xml, aparece 2 vezes).
+1. Partir do documento do mês anterior (ou do rascunho do mês, se a equipe já tiver salvo) na pasta acima —
+   é a versão revisada pela equipe, então serve de modelo de estilo.
 2. Usar **todos** os materiais do mês de referência salvos nas pastas `Institucional` de cada fundo
    (factsheets, comentários, cartas, relatórios trimestrais). Conferir o mês dentro do PDF: às vezes o
    nome do arquivo traz o mês em que foi salvo, não o de referência.
 3. Estrutura de cada fundo: performance vs. benchmark e contexto de mercado; contribuidores e detratores;
    posicionamento/movimentações e visão do gestor; composição da carteira; nos fundos de crédito, linha final
-   com YTW/YTM e duration. Citar a classe usada quando o retorno vier de uma classe específica.
-4. Ao gerar o .docx, os parágrafos copiados não podem repetir `w14:paraId`/`w14:textId` (o Word recusa o arquivo).
-5. Entregar o .docx à usuária e pedir que rode `publicar_comentario.bat`: ele copia o Word de Downloads para a
+   com YTW/YTM e duration.
+   **Não escrever o retorno do próprio fundo no mês/ano (nem o do benchmark ao lado)**: a tabela de resultados
+   já mostra; no texto vai só a direção ("devolveu levemente no mês, abaixo do benchmark"). Na revisão de
+   setembro/2026 a equipe tirou esses números. Atribuição, exposições, posições e YTW/duration ficam com números.
+4. Tabela de resultados (imagem no início do documento): vem do Excel `RetornosCarteirasFoFs_AAAAMM.xlsx`
+   em `G:\Drives compartilhados\Gestao_Base_Dados\OFF\Resultados Offshore` (no Drive: pasta "Resultados Offshore"),
+   que a equipe salva todo mês. `comentarios/tabela_resultados.py` gera a imagem (usa a aba limpa "Sheet1 (2)" se
+   existir; senão tira 1M (-1), 1M (-2) e o grupo ALT Onshore). Conferir que a data de retorno é o fim do mês de
+   referência. Se o Excel do mês não estiver lá, manter a imagem anterior e avisar.
+5. Gerar o .docx com `comentarios/montar.py` (texto em um arquivo `COMENTARIOS = {título: [parágrafos]}`):
+   `python3 comentarios/montar.py BASE.docx comentarios_AAAAMM.py SAIDA.docx --tabela RetornosCarteirasFoFs_AAAAMM.xlsx --mes Outubro`
+   Ele mantém a formatação (Calibri, vermelho EE0000, títulos 14 pt), troca o mês no cabeçalho e não repete
+   `w14:paraId`/`w14:textId` (o Word recusa o arquivo). Em janeiro, conferir o ano no cabeçalho.
+6. Entregar o .docx à usuária e pedir que rode `publicar_comentario.bat`: ele copia o Word de Downloads para a
    pasta de Materiais e salva a cópia em PDF pelo Word.
-6. Listar no fim os pontos para revisão (materiais faltantes, classes diferentes, números estimados).
+7. Listar no fim os pontos para revisão (materiais faltantes, classes diferentes, números estimados).
 
 Fundos (ordem do documento): AQR Delphi, AQR Apex, BSF Global Event Driven, Schroder GAIA Contour Tech,
 Jupiter Merian GEAR, Algebris Financial Credit, Ninety One EM Corp Debt, Oaktree Global Credit,
