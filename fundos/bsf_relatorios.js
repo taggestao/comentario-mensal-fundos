@@ -9,13 +9,15 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const { SESSAO, baixarComSessao } = require('../lib/blackrock');
+const { ehPdf } = require('../lib/util');
 
 const NOME = 'BSF Global Event Driven Fund';
 const DOWNLOADS = process.env.PASTA_DOWNLOADS || path.join(os.homedir(), 'Downloads');
 
 // "BlackRock_Global_Event_Driven_Monthly_Fund_Update.371849.391725.portfolio.20260930.pdf"
 function nomePadrao(arquivoBaixado) {
-  if (!/Global[_ ]Event[_ ]Driven/i.test(arquivoBaixado) || !/\.pdf$/i.test(arquivoBaixado)) return null;
+  // com ou sem a extensão .pdf (o navegador às vezes salva sem); o conteúdo é conferido depois
+  if (!/Global[_ ]Event[_ ]Driven/i.test(arquivoBaixado) || !/(\.pdf|\d{8})( \(\d+\))?$/i.test(arquivoBaixado)) return null;
   const d = arquivoBaixado.match(/(20\d\d)(0[1-9]|1[0-2])\d{2}(?!\d)/);
   if (!d) return null;
   const mes = d[1] + d[2];
@@ -35,7 +37,8 @@ module.exports = {
       for (const f of fs.readdirSync(DOWNLOADS)) {
         const alvo = nomePadrao(f);
         if (alvo && !out.some(o => o.arquivo === alvo.arquivo)) {
-          out.push({ ...alvo, buf: fs.readFileSync(path.join(DOWNLOADS, f)), origem: `Downloads\\${f}` });
+          const buf = fs.readFileSync(path.join(DOWNLOADS, f));
+          if (ehPdf(buf)) out.push({ ...alvo, buf, origem: `Downloads\\${f}` });
         }
       }
     }
