@@ -24,8 +24,11 @@ CORES = ((0xF8, 0x69, 0x6B), (0xFC, 0xFC, 0xFF), (0x63, 0xBE, 0x7B))
 
 def ler(caminho):
     wb = openpyxl.load_workbook(caminho, data_only=True)
-    limpa = len(wb.worksheets) > 1
-    ws = wb.worksheets[-1] if limpa else wb.worksheets[0]
+    # abas com a tabela (as que têm "Group/Investment"); outras abas, como "Data Sources", são ignoradas.
+    # Havendo mais de uma, a última é a limpa ("Sheet1 (2)")
+    tabelas = [w for w in wb.worksheets
+               if any(r[0] == 'Group/Investment' for r in w.iter_rows(max_col=1, values_only=True))]
+    ws = tabelas[-1]
     linhas = [[c.value for c in r] for r in ws.iter_rows()]
     i_per = next(i for i, l in enumerate(linhas) if '1M' in l)
     i_cab = next(i for i, l in enumerate(linhas) if l and l[0] == 'Group/Investment')

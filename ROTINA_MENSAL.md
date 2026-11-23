@@ -50,6 +50,7 @@ lido de dentro do PDF.
 | PIMCO GIS Income (Inst USD Acc) | Fact Sheet, Commentary (Monthly Commentary ou, no fim do trimestre, Quarterly Investment Report) | pimco.com (página do fundo, perfil Financial Professional) | `coletar.bat` |
 | Man GLG High Yield Opportunities (I H USD) | Fact Sheet, Commentary | man.com; se falhar, `Man Group.zip` do e-mail "HMC/Gama \| Atualização Mensal MAN" | `coletar.bat` |
 | BNY Multi-Sector Credit Income | Factsheet, Commentary | FE fundinfo (digital.feprecisionplus.com, links fixos) | `coletar.bat` |
+| Neuberger Corporate Hybrid Bond (USD I Acc na tabela) | Fact Sheet, Manager Commentary | nb.com (desde out/2026) | **manual** (salvar em `Neuberger Berman\Neuberger Berman Corporate Hybrid\Institucional`) |
 
 ### E-mails monitorados pelo Apps Script
 

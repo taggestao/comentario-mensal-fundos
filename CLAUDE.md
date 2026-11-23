@@ -45,4 +45,6 @@ Passos:
 
 Fundos (ordem do documento): AQR Delphi, AQR Apex, BSF Global Event Driven, Schroder GAIA Contour Tech,
 Jupiter Merian GEAR, Algebris Financial Credit, Ninety One EM Corp Debt, Oaktree Global Credit,
-PIMCO GIS Income, Man High Yield Opportunities, BNY Multi-Sector Credit.
+PIMCO GIS Income, Man High Yield Opportunities, BNY Multi-Sector Credit, Neuberger Corporate Hybrid Bond
+(incluído em out/2026; materiais em `Neuberger Berman\Neuberger Berman Corporate Hybrid\Institucional`, salvos pela equipe;
+fundo novo entra no fim do documento pelo `montar.py`).
