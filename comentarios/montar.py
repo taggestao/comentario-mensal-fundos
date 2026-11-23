@@ -6,7 +6,8 @@ Uso:
 - BASE.docx: documento do mês anterior (ou o rascunho do mês), da pasta de Materiais.
 - comentarios_AAAAMM.py: define COMENTARIOS = {'TÍTULO DO FUNDO': ['parágrafo', ...], ...};
   o título é comparado com o início do título no documento (14 pt). Fundos fora do dicionário
-  ficam como estão.
+  ficam como estão; título que não existe no documento (fundo novo) entra no fim, com a formatação
+  do último título.
 - --tabela: troca a imagem da tabela de resultados (primeira imagem do corpo) pela gerada do
   Excel da pasta "Resultados Offshore" (ver tabela_resultados.py).
 - --mes: troca o nome do mês no cabeçalho (header1.xml, aparece 2 vezes). Em janeiro, conferir o ano.
@@ -47,11 +48,22 @@ def trocar_comentarios(xml, comentarios):
     assert not texto(espaco).strip(), 'esperava parágrafo vazio após o corpo'
     novo_par = lambda t: f'<w:p>{ppr}<w:r>{rpr}<w:t xml:space="preserve">{html.escape(t, quote=False)}</w:t></w:r></w:p>'
 
+    # fundo novo (título que ainda não existe no documento): entra no fim, antes de "Área de Gestão",
+    # com a formatação do último título
+    titulo_modelo = paras[titulos[-1]][2]
+    tppr = re.search(r'<w:pPr>.*?</w:pPr>', titulo_modelo, re.S)
+    trpr = re.search(r'<w:r[ >](?:(?!</w:r>).)*?(<w:rPr>.*?</w:rPr>)(?:(?!</w:r>).)*?<w:t', titulo_modelo, re.S).group(1)
+    novo_titulo = lambda t: (f'<w:p>{tppr.group() if tppr else ""}<w:r>{trpr}'
+                             f'<w:t xml:space="preserve">{html.escape(t, quote=False)}</w:t></w:r></w:p>')
+
     trocas = []
     for nome, textos in comentarios.items():
         achados = [i for i in titulos if texto(paras[i][2]).strip().upper().startswith(nome.strip().upper())]
         if not achados:
-            sys.exit(f'título não encontrado no documento: {nome}')
+            pos = paras[fim_doc][0]
+            print(f'fundo novo (inserido no fim): {nome}')
+            trocas.append((pos, pos, novo_titulo(nome) + espaco.join(novo_par(t) for t in textos) + espaco))
+            continue
         it = achados[0]
         prox = min([i for i in titulos if i > it] + [fim_doc])
         ini, fim = paras[it + 1][0], paras[prox][0]   # tudo entre o título e o próximo título
