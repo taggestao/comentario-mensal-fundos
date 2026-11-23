@@ -45,6 +45,9 @@ Passos:
 
 Fundos (ordem do documento): AQR Delphi, AQR Apex, BSF Global Event Driven, Schroder GAIA Contour Tech,
 Jupiter Merian GEAR, Algebris Financial Credit, Ninety One EM Corp Debt, Oaktree Global Credit,
-PIMCO GIS Income, Man High Yield Opportunities, BNY Multi-Sector Credit, Neuberger Corporate Hybrid Bond
-(incluído em out/2026; materiais em `Neuberger Berman\Neuberger Berman Corporate Hybrid\Institucional`, salvos pela equipe;
-fundo novo entra no fim do documento pelo `montar.py`).
+PIMCO GIS Income, Man High Yield Opportunities, BNY Multi-Sector Credit, Neuberger Corporate Hybrid Bond,
+JPMorgan Global High Yield Bond (os dois últimos incluídos em out/2026; fundo novo entra no fim pelo `montar.py`).
+Neuberger: `fundos/neuberger.js` (nb.com tem checagem anti-robô; se falhar, a equipe salva à mão em
+`Neuberger Berman\Neuberger Berman Corporate Hybrid\Institucional`). JPM Global HY: factsheet A (acc) USD por
+`fundos/jpm_hy.js`; comentário do gestor vem no corpo do e-mail "Early Commentary for Global HY fund and ETF",
+salvo em PDF pelo Apps Script em `JP Morgan\JPM Funds\JPM Funds - Global High Yield Bond Fund\Institucional`.

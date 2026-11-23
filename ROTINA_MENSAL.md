@@ -50,7 +50,9 @@ lido de dentro do PDF.
 | PIMCO GIS Income (Inst USD Acc) | Fact Sheet, Commentary (Monthly Commentary ou, no fim do trimestre, Quarterly Investment Report) | pimco.com (página do fundo, perfil Financial Professional) | `coletar.bat` |
 | Man GLG High Yield Opportunities (I H USD) | Fact Sheet, Commentary | man.com; se falhar, `Man Group.zip` do e-mail "HMC/Gama \| Atualização Mensal MAN" | `coletar.bat` |
 | BNY Multi-Sector Credit Income | Factsheet, Commentary | FE fundinfo (digital.feprecisionplus.com, links fixos) | `coletar.bat` |
-| Neuberger Corporate Hybrid Bond (USD I Acc na tabela) | Fact Sheet, Manager Commentary | nb.com (desde out/2026) | **manual** (salvar em `Neuberger Berman\Neuberger Berman Corporate Hybrid\Institucional`) |
+| Neuberger Corporate Hybrid Bond (USD I Acc na tabela) | Fact Sheet (USD A Acc), Manager Commentary | nb.com (tem checagem anti-robô) | `coletar.bat`; se der erro, salvar à mão em `Neuberger Berman\Neuberger Berman Corporate Hybrid\Institucional` |
+| JPMorgan Global High Yield Bond (A acc USD) | Fact Sheet | am.jpmorgan.com (API de dados do fundo) | `coletar.bat` |
+| | Commentary | e-mail "Early Commentary for Global HY fund and ETF" (texto no corpo) | Apps Script (salva o e-mail em PDF) |
 
 ### E-mails monitorados pelo Apps Script
 
@@ -61,6 +63,7 @@ lido de dentro do PDF.
 | LuxFundServices@aqr.com | … Monthly Reporting Package (com anexos) | AQR Apex e Delphi |
 | noreplyclientopsreporting@ninetyone.com | Ninety One - TAG … Quarterly Reporting | Ninety One |
 | alt-clientsupport@blackrock.com | … Global Event Driven_Monthly Fund Update / Quarterly Extended Commentary | BSF (só anota o link) |
+| (JP Morgan, Advisory Brasil) | Early Commentary for Global HY fund and ETF | JPM Global High Yield (corpo do e-mail vira PDF) |
 
 Se um gestor mudar o remetente ou o assunto, o e-mail deixa de ser reconhecido: ajuste a regra em
 `apps-script/coleta_email.gs` e cole de novo no script.google.com.

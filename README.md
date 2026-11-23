@@ -15,6 +15,8 @@ Baixa dos sites dos gestores os factsheets e comentários mensais dos fundos UCI
 | Jupiter Merian Global Equity Absolute Return (I USD Acc) | Fact Sheet, Fund Monthly Investment Report | `Jupiter Asset Mgmt\Jupiter Merian Global Equity Absolute Return Fund - GEAR\Institucional` |
 | Schroder GAIA Contour Tech Equity (C Acc USD) | Fact Sheet, Commentary | `Contour Asset Mgmt\Schroder GAIA Contour Tech Equity Fund\Institucional` |
 | BSF Global Event Driven (A2 Acc USD) | Fact Sheet | `BlackRock\BlackRock Strategic Funds\BSF Global Event Driven Fund\Institucional` |
+| JPMorgan Global High Yield Bond (A acc USD) | Fact Sheet | `JP Morgan\JPM Funds\JPM Funds - Global High Yield Bond Fund\Institucional` |
+| Neuberger Corporate Hybrid Bond (USD A Acc) | Fact Sheet, Commentary | `Neuberger Berman\Neuberger Berman Corporate Hybrid\Institucional` |
 
 Exemplo de nome: `PIMCO GIS Income Fund - 202610 - Fact Sheet - Inst USD.pdf`. O mês (`AAAAMM`) é lido do próprio documento.
 
@@ -28,7 +30,7 @@ Exemplo de nome: `PIMCO GIS Income Fund - 202610 - Fact Sheet - Inst USD.pdf`. O
 
 O Google Drive para computador precisa estar aberto, com o drive `G:` disponível.
 
-## Coleta por e-mail (AQR e Ninety One trimestral)
+## Coleta por e-mail (AQR, Ninety One trimestral, JPM Global HY e BSF)
 
 Alguns materiais só chegam por e-mail. O script `apps-script/coleta_email.gs` roda na sua conta Google, uma vez por dia, e salva direto nas pastas `Institucional` do Drive:
 
@@ -40,6 +42,7 @@ Alguns materiais só chegam por e-mail. O script `apps-script/coleta_email.gs` r
 | AQR Delphi | Monthly Reporting Package (anexos) | `AQR Delphi Long-Short Equity UCITS Fund - AAAAMM - Custom Risk Report.pdf`, `... - Since Inception Performance.pdf` |
 | Ninety One | Quarterly Reporting (anexo) | `Ninety One GSF Emerging Markets Corporate Debt Fund - AAAAMM - Quarterly Reporting.pdf` |
 | BSF Global Event Driven | Monthly Fund Update e Quarterly Extended Commentary (securelink, exige login) | `BSF Global Event Driven Fund - AAAAMM - Fund Update.pdf`, `... - Quarterly Extended Commentary.pdf` |
+| JPM Global High Yield | "Early Commentary for Global HY fund and ETF" (texto no corpo do e-mail, salvo em PDF) | `JPM Global High Yield Bond Fund - AAAAMM - Commentary.pdf` |
 
 **BlackRock (BSF):** o link do e-mail exige o seu login pessoal no portal da BlackRock. Todo mês, quando chegar o e-mail "… BlackRock Global Event Driven_Monthly Fund Update", clique no link no seu navegador de sempre: o PDF vai para **Downloads** e a próxima coleta (`coletar.bat`) renomeia com o nome padrão e salva na pasta do BSF. O Apps Script anota os links em `_links_pendentes.json` e o log da coleta avisa quando algum ainda não foi baixado. (Opcional: com uma sessão salva pelo `login_blackrock.bat`, a coleta baixa sozinha.)
 

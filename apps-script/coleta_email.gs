@@ -13,6 +13,7 @@ const PASTAS = {
   aqrDelphi: '1QAdor8fhfeoyW6atYRp-ak2bgzedjGar',  // AQR\AQR Alternative Strategies\AQR Delphi Long-Short Equity Strategy\Institucional
   ninetyOne: '1bjQ0MArQU5dTzbwUvXXcfKEJ5pxPZsGO',  // Ninety One\Ninety One GSF Emerging Markets Corporate Debt Fund\Institucional
   bsf: '1_0S1oayznlfr7UwiD34IVsGrTp7EUuCX',        // BlackRock\BlackRock Strategic Funds\BSF Global Event Driven Fund\Institucional
+  jpmHy: '1BxhM1jKbAB7krH83c9JNKU2qC6S4ZIK_',      // JP Morgan\JPM Funds\JPM Funds - Global High Yield Bond Fund\Institucional
 };
 
 // Links que exigem login no portal do gestor: o script só anota (link + nome do arquivo) neste arquivo da
@@ -87,6 +88,13 @@ const REGRAS = [
     pasta: PASTAS.aqrDelphi,
     link: mes => `${DELPHI} - ${mes} - Quarterly Letter.pdf`,
   },
+  // comentário no corpo do e-mail (sem anexo): o texto do e-mail é salvo em PDF; mês = anterior ao do e-mail
+  {
+    nome: 'JPM Global High Yield – Early Commentary',
+    busca: 'subject:"Early Commentary for Global HY"',
+    pasta: PASTAS.jpmHy,
+    corpo: mes => `JPM Global High Yield Bond Fund - ${mes} - Commentary.pdf`,
+  },
 ];
 
 /** Roda uma vez para criar o gatilho diário e já fazer a primeira coleta. */
@@ -106,7 +114,8 @@ function coletar() {
     for (const thread of threads) {
       try {
         for (const msg of thread.getMessages()) {
-          const salvos = regra.pendente ? anotarPendente(regra, msg) : regra.link ? salvarLink(regra, msg) : salvarAnexos(regra, msg);
+          const salvos = regra.pendente ? anotarPendente(regra, msg) : regra.link ? salvarLink(regra, msg)
+            : regra.corpo ? salvarCorpo(regra, msg) : salvarAnexos(regra, msg);
           salvos.forEach(s => resumo.push(`${regra.nome}: ${s}`));
         }
         thread.addLabel(rotulo);
@@ -127,6 +136,16 @@ function salvarAnexos(regra, msg) {
     if (nome && salvar(regra.pasta, nome, a.copyBlob())) salvos.push(nome);
   }
   return salvos;
+}
+
+function salvarCorpo(regra, msg) {
+  const nome = regra.corpo(mesAnterior(msg.getDate()));
+  if (existe(regra.pasta, nome)) return [];
+  const cabecalho = `<p style="font-family:Arial;font-size:9pt;color:#555">${msg.getSubject()}<br>` +
+    `De: ${msg.getFrom()} | ${Utilities.formatDate(msg.getDate(), 'America/Sao_Paulo', 'dd/MM/yyyy')}</p><hr>`;
+  const html = `<html><head><meta charset="utf-8"></head><body>${cabecalho}${msg.getBody()}</body></html>`;
+  const pdf = Utilities.newBlob(html, 'text/html', 'comentario.html').getAs('application/pdf');
+  return salvar(regra.pasta, nome, pdf) ? [nome] : [];
 }
 
 function salvarLink(regra, msg) {

@@ -56,13 +56,12 @@ def trocar_comentarios(xml, comentarios):
     novo_titulo = lambda t: (f'<w:p>{tppr.group() if tppr else ""}<w:r>{trpr}'
                              f'<w:t xml:space="preserve">{html.escape(t, quote=False)}</w:t></w:r></w:p>')
 
-    trocas = []
+    trocas, novos = [], ''
     for nome, textos in comentarios.items():
         achados = [i for i in titulos if texto(paras[i][2]).strip().upper().startswith(nome.strip().upper())]
         if not achados:
-            pos = paras[fim_doc][0]
             print(f'fundo novo (inserido no fim): {nome}')
-            trocas.append((pos, pos, novo_titulo(nome) + espaco.join(novo_par(t) for t in textos) + espaco))
+            novos += novo_titulo(nome) + espaco.join(novo_par(t) for t in textos) + espaco
             continue
         it = achados[0]
         prox = min([i for i in titulos if i > it] + [fim_doc])
@@ -70,7 +69,10 @@ def trocar_comentarios(xml, comentarios):
         seg = xml[ini:fim]
         assert '<w:drawing' not in seg and '<w:sectPr' not in seg, nome
         trocas.append((ini, fim, espaco.join(novo_par(t) for t in textos) + espaco))
-    for ini, fim, novo in sorted(trocas, reverse=True):
+    if novos:   # todos os fundos novos num bloco só, na ordem do dicionário
+        pos = paras[fim_doc][0]
+        trocas.append((pos, pos, novos))
+    for ini, fim, novo in sorted(trocas, key=lambda t: t[0], reverse=True):
         xml = xml[:ini] + novo + xml[fim:]
     return xml, len(trocas)
 
